@@ -25,9 +25,12 @@ Route::get('ticket-type', 'TicketTypeController@index');
 
 Route::get('ticket-status', 'TicketStatusController@index');
 
+Route::get('ticket', 'TicketController@index');
+
 Route::get('crm-ticket/create', 'CrmAndTicketController@create');
 Route::post('crm-ticket/crm-store', 'CrmAndTicketController@storeCrm');
 Route::post('crm-ticket/ticket-store', 'CrmAndTicketController@storeTicket');
+Route::post('crm-ticket/ticket-update', 'CrmAndTicketController@updateTicket');
 
 Route::group([ 'middleware' => 'can:ticket_admin-access'], function () {
 	Route::get('/user/{id}/edit', 'UserController@edit');
@@ -42,5 +45,12 @@ Route::group([ 'middleware' => 'can:ticket_admin-access'], function () {
 	Route::post('ticket-status', 'TicketStatusController@store');
 	Route::get('ticket-status/{id}/edit', 'TicketStatusController@edit');
 	Route::put('ticket-status/{id}', 'TicketStatusController@update');
+
+	Route::get('ticket/create', 'TicketController@create');
+	Route::post('ticket', 'TicketController@store');
+	Route::get('ticket/{id}/edit', 'TicketController@edit');
+	Route::put('ticket/{id}', 'TicketController@update');
 });
+
+Route::get('/mail','MailTestController@index'); //Working
 

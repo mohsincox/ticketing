@@ -29,10 +29,14 @@
 		.panel {margin-bottom: 0px;}
 		.panel-body {padding-bottom: 0px;}
 		.alert {padding: 0px; margin-bottom: 0px;}
+		.table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
+    			padding: 0px;
+			}
+		.table {margin-bottom: 0px;}
 	</style>
 </head>
 <body>
-	<nav class="navbar navbar-inverse navbar-xs" style="margin-bottom: 0px;">
+	<!-- <nav class="navbar navbar-inverse navbar-xs" style="margin-bottom: 0px;">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#" style="color: #FFFFFF">WebSiteName</a>
@@ -52,23 +56,30 @@
 			<button class="btn btn-danger navbar-btn btn-xs" style="margin-top: 4px; margin-bottom: 0px;">Button 7</button>
 			
 		</div>
-	</nav>
-	<?php 
-		
-		$agent = ""; 
-		$phone_number = ""; 
-		$agent = isset($_GET['agent']) ? $_GET['agent'] : '';
-		$phone_number = isset($_GET['phone_number']) ? $_GET['phone_number'] : '';
-		
-		//$agent = $_GET['agent'];
-		//$phone_number = $_GET['phone_number'];
+	</nav> -->
+	
+	<?php
+		function validatePhone($number) {
+
+		$number=preg_replace('/\D/', '',  $number);    						//  Deleting Non Numeric Characters
+		if(substr($number, 0, 1) == "+" ) $number=substr($number, 1);		//  Deleting + if in First Position
+		if(substr($number, 0, 2) == "88") $number=substr($number, 2);		//  Deleting 8 if in First Two Position
+		if(substr($number, 0, 2) == "00") $number=substr($number, 2);		//  Deleting 0 if in First Two Position
+		if(substr($number, 0, 1) == "0" ) $number=substr($number, 1);		//  Deleting 0 if in First Position
+
+
+		if(strlen($number)<=5 || strlen($number)>11) return "NO";
+		else return $number;
+		}
+
+		$agent = isset($agentCon) ? $agentCon : 'Call Center';
+		$phone_number = isset($phoneNumberCon) ? validatePhone($phoneNumberCon) : 'No Phone Number';
 	?>
   
 	<div class="container-fluid">
 
         @include('flash::message')
    
-		<!-- <h3 style="margin-top: 0px; margin-bottom: 0px;">Testing</h3> -->
 		<div class="col-sm-12">
 		
 			<div class="col-sm-6" style="padding-left: 0px;">
@@ -77,7 +88,7 @@
 						DANO CRM <code><?php echo 'Agent: '.$agent; ?></code> & <code> <?php echo 'Phone No: '.$phone_number; ?></code>
 					</div>
 					<div class="panel-body">
-						<form class="form-horizontal" method="post" action="crm-store">
+						<form class="form-horizontal" method="post" action="{{ url('crm-ticket/crm-store') }}">
 							{{ csrf_field() }}
 							<input type="hidden" class="form-control" id="" placeholder="" name="agent" value="<?php echo $agent; ?>">
 							<input type="hidden" class="form-control" id="" placeholder="" name="phone_number" value="<?php echo $phone_number; ?>">
@@ -187,9 +198,16 @@
 							</div>
 
 							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Base Code/Product:</label>
+								<label class="control-label col-sm-6" for="">Batch Code/Product:</label>
 								<div class="col-sm-6 input-group input-group-sm">          
-									<input type="text" class="form-control" id="" placeholder="Base Code / Product" name="product_base_code" autocomplete="off">
+									<input type="text" class="form-control" id="" placeholder="Batch Code / Product" name="product_batch_code" autocomplete="off">
+								</div>
+							</div>
+
+							<div class="form-group top-14px">
+								<label class="control-label col-sm-6" for="">Verbatim:</label>
+								<div class="col-sm-6 input-group input-group-sm">          
+									<input type="text" class="form-control" id="" placeholder="verbatim" name="verbatim" autocomplete="off">
 								</div>
 							</div>
 					
@@ -236,6 +254,27 @@
 						</form>
 					</div>
 				</div>
+
+				<div class="col-sm-12">
+					<table class="table table-bordered table-condensed">
+					    <thead>
+					      	<tr>
+						        <th>Category</th>
+						        <th>B.Code/Product</th>
+						        <th>Varbatin</th>
+					      	</tr>
+					    </thead>
+					    <tbody>
+					    	@foreach($crmRecords as $crm)
+							    <tr>
+							        <td>{{ $crm->category }}</td>
+							        <td>{{ $crm->name }}</td>
+							        <td>{{ $crm->address }}</td>
+							    </tr>
+						    @endforeach
+					    </tbody>
+					  </table>
+				</div>
 			</div>
 			
 	
@@ -245,7 +284,7 @@
 						<mark>iTraker</mark> <code><?php echo 'Phone No: '.$phone_number; ?></code> & <code><?php echo 'Agent: '.$agent; ?></code>
 					</div>
 					<div class="panel-body">
-						<form class="form-horizontal" method="post" action="ticket-store">
+						<form class="form-horizontal" method="post" action="{{ url('crm-ticket/ticket-store') }}">
 							{{ csrf_field() }}
 							<input type="hidden" class="form-control" id="" placeholder="" name="agent" value="<?php echo $agent; ?>">
 							<input type="hidden" class="form-control" id="" placeholder="" name="risen_from" value="Call Center">
@@ -309,9 +348,9 @@
 							</div>
 
 							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Base Code/Product:</label>
+								<label class="control-label col-sm-6" for="">Batch Code/Product:</label>
 								<div class="col-sm-6 input-group input-group-sm">          
-									<input type="text" class="form-control" id="" placeholder="Base Code / Product" name="product_base_code" autocomplete="off" value="<?php if(isset($crmLastRecord->product_base_code)){echo $crmLastRecord->product_base_code;} ?>">
+									<input type="text" class="form-control" id="" placeholder="Batch Code / Product" name="product_batch_code" autocomplete="off" value="<?php if(isset($crmLastRecord->product_batch_code)){echo $crmLastRecord->product_batch_code;} ?>">
 								</div>
 							</div>
 				  
@@ -349,12 +388,49 @@
 						</form>
 					</div>
 				</div>
+
+				<div class="col-sm-12 col-xs-12" style="padding-right: 0px;padding-left: 0px;">
+					@if(isset($ticketLastRecord))
+						<center><p class=""><span class="">Update Ticket</span></p></center>
+						<center><form class="form-inline" method="post" action="{{ url('crm-ticket/ticket-update') }}">
+							{{ csrf_field() }}
+							<input type="hidden" class="form-control" id="" placeholder="" name="ticket_id" value="<?php echo $ticketLastRecord->id; ?>">
+						    <div class="form-group">
+						      	<label>Type<span class="asteriskField">*</span></label>
+						      	{!! Form::select('ticket_type_id', $ticketTypeList, $ticketLastRecord->ticket_type_id, ['class' => 'form-control input-sm', 'style' => 'padding: 0px 0px;', 'placeholder' => 'Select', 'required' => 'required']) !!}
+						    </div>
+						    <div class="form-group">
+						      	<label>Status<span class="asteriskField">*</span></label>
+						      	{!! Form::select('ticket_status_id', $ticketStatusList, $ticketLastRecord->ticket_status_id, ['class' => 'form-control input-sm', 'style' => 'padding: 0px 0px;', 'placeholder' => 'Select', 'required' => 'required']) !!}
+						    </div>
+					    	<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModalTicketUpdate">Update</button>
+
+					    	<div class="modal fade" id="myModalTicketUpdate" role="dialog">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header bg-info">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title">Confirmation Message</h4>
+										</div>
+										<div class="modal-body">
+											<h3>Do you want to <b><mark>Update</mark> ticket</b>?</h3>
+										</div>
+										<div class="modal-footer bg-info">
+											<button type="submit" name="submit"  class="btn btn-success btn-block">Yes</button>
+											<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">No</button> -->
+										</div>
+									</div>
+								</div>
+							</div>
+					  	</form></center>
+					  @endif
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid">
+	<div class="container-fluid" style="padding-right: 0px; padding-left: 0px;">
 		<div style="background: #43474d;">
-			<center><p style="font-family: 'Open Sans', serif; font-size: 12px; margin-top: 9px;"><span style="color: #FFFFFF">© 2015. MY Outsourcing Limited. Developed by</span> <a href="#" style="color: red;">MY Outsoursing Limited.</a> <span style="color: #FFFFFF">All Rights Reserved.</span></p></center>
+			<center><p style="font-family: 'Open Sans', serif; font-size: 12px; margin-top: 0px;"><span style="color: #FFFFFF">© 2015. MY Outsourcing Limited. Developed by</span> <a href="#" style="color: red;">MY Outsoursing Limited.</a> <span style="color: #FFFFFF">All Rights Reserved.</span></p></center>
 		</div>
 	</div>
 	<script>

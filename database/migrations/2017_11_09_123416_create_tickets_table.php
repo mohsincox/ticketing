@@ -22,7 +22,7 @@ class CreateTicketsTable extends Migration
             $table->string('customer_phone_number')->nullable();
             $table->string('customer_address')->nullable();
             $table->string('division')->nullable();
-            $table->string('product_base_code')->nullable();
+            $table->string('product_batch_code')->nullable();
             $table->string('description')->nullable();
             $table->string('agent')->nullable();
             $table->integer('created_by')->unsigned()->nullable();

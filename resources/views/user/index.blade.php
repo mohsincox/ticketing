@@ -17,7 +17,7 @@
 								<th>Role</th>
 								<th>Phone Number</th>
 								<th>Address</th>
-								@can('super_admin-access')
+								@can('ticket_admin-access')
 								<th>Edit</th>
                     			@endcan
 							</tr>
@@ -40,7 +40,7 @@
 								<td>{{ $role }}</td>
 								<td>{{ $user->phone_number }}</td>
 								<td>{{ $user->address }}</td>
-								@can('super_admin-access')
+								@can('ticket_admin-access')
 								<td><a href='{{"user/$user->id/edit"}}' class="btn btn-success btn-sm">Change Role</a></td>
 								@endcan
 							</tr>
