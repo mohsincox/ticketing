@@ -9,6 +9,9 @@ use App\User;
 use App\Models\Ticket;
 use App\Models\TicketType;
 use App\Models\TicketStatus;
+use Illuminate\Support\Facades\Auth;
+use Validator;
+use Illuminate\Support\Facades\Input;
 
 class TicketController extends Controller
 {
@@ -19,60 +22,33 @@ class TicketController extends Controller
 
     public function index()
     {
-    	$tickets = Ticket::with(['user', 'ticketType', 'ticketStatus'])->orderBy('id', 'desc')->get();
-    	return view('ticket.index', compact('tickets'));
-    }
-
-    public function create()
-    {
-    	return view('ticket.create');
-    }
-
-    public function store(Request $request)
-    {
-    	$input = Input::all();
-	    $rules = [
-	    	'user_id' => 'required',
-	    	'ticket_type_id' => 'required',
-	    	'ticket_status_id' => 'required'
-	    ];
-	    $messages = [
-            'user_id.required' => 'The Select Assign To field is required.',
-            'ticket_type_id.required' => 'The Select Ticket Type field is required.',
-            'ticket_status_id.required' => 'The Select Ticket Status field is required.'
-        ];
-	    
-    	$validator = Validator::make($input, $rules, $messages);
-        if ($validator->fails()) {
-        	flash()->error('Something Wrong!');
-            return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
+        $userAuth = Auth::user();
+        $idAuth = $userAuth->id;
+        $roleAuth = $userAuth->role;
+        if ($roleAuth == 'user') {
+            $tickets = Ticket::with(['user', 'ticketType', 'ticketStatus'])->where('user_id', $idAuth)->orderBy('id', 'desc')->get();
+        } else {
+            $tickets = Ticket::with(['user', 'ticketType', 'ticketStatus'])->orderBy('id', 'desc')->get();
         }
-        $ticketStatus = new Ticket;
-        $ticketStatus->name = $request->name;
-        $ticketStatus->created_by = Auth::id();
-        $ticketStatus->save();
-        flash()->success($ticketStatus->name.' Ticket Status created successfully');
-    	return redirect('ticket-status');
+
+    	return view('ticket.index', compact('tickets'));
     }
 
     public function edit($id)
     {
-    	$ticketStatus = Ticket::find($id);
-    	return view('ticket_status.edit', compact('ticketStatus'));
+    	$ticket = Ticket::find($id);
+        $ticketStatusList = TicketStatus::where('id', '<>', 4)->pluck('name', 'id');
+    	return view('ticket.edit', compact('ticket', 'ticketStatusList'));
     }
     
     public function update(Request $request, $id)
     {
-    	$ticketStatus = Ticket::find($id);
     	$input = Input::all();
 	    $rules = [
-	    	'name' => 'required|unique:ticket_statuses,name,'.$ticketStatus->id,
+	    	'ticket_status_id' => 'required'
 	    ];
 	    $messages = [
-            'name.required' => 'The Ticket Status field is required.',
-            'name.unique' => 'The Ticket Status already exist.'
+            'ticket_status_id.required' => 'The Ticket Status field is required.'
         ];
 	    
     	$validator = Validator::make($input, $rules, $messages);
@@ -82,10 +58,11 @@ class TicketController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }
-        $ticketStatus->name = $request->name;
-        $ticketStatus->updated_by = Auth::id();
-        $ticketStatus->save();
-        flash()->success($ticketStatus->name.' Ticket Status updated successfully');
-    	return redirect('ticket-status');
+        $ticket = Ticket::find($id);
+        $ticket->ticket_status_id = $request->ticket_status_id;
+        $ticket->updated_by = Auth::id();
+        $ticket->save();
+        flash()->success('Ticket updated successfully');
+    	return redirect('ticket');
     }
 }

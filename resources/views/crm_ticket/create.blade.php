@@ -95,7 +95,7 @@
 							<div class="form-group top-14px">
 								<label class="control-label col-sm-6" for="">Name:</label>
 								<div class="col-sm-6 input-group input-group-sm">
-									<input type="text" class="form-control" id="" placeholder="Name of the Caller" name="name" autocomplete="off">
+									<input type="text" class="form-control" id="" placeholder="Name of the Caller" name="name" autocomplete="off" value="<?php if(isset($crmLastRecord->name)){echo $crmLastRecord->name;} ?>">
 								</div>
 							</div>
 
@@ -106,8 +106,8 @@
 								<div class="col-sm-6 input-group input-group-sm">
 									<select class="form-control" id="" name="gender">
 										<option value="">--Select--</option>
-										<option value="Male">Male</option>
-										<option value="Female">Female</option>
+										<option value="Male" <?php if(isset($crmLastRecord->gender)){ if($crmLastRecord->gender == "Male"){ ?> selected="selected" <?php } }?> >Male</option>
+										<option value="Female" <?php if(isset($crmLastRecord->gender)){ if($crmLastRecord->gender == "Female"){ ?> selected="selected" <?php } }?> >Female</option>
 									</select>
 								</div>
 							</div>
@@ -119,10 +119,10 @@
 								<div class="col-sm-6 input-group input-group-sm">
 									<select class="form-control" id="" name="type_of_caller">
 										<option value="">--Select--</option>
-										<option value="Consumer">Consumer</option>
-										<option value="Retailer">Retailer</option>
-										<option value="Official">Official</option>
-										<option value="Dealer">Dealer</option>
+										<option value="Consumer" <?php if(isset($crmLastRecord->type_of_caller)){ if($crmLastRecord->type_of_caller == "Consumer"){ ?> selected="selected" <?php } }?> >Consumer</option>
+										<option value="Retailer" <?php if(isset($crmLastRecord->type_of_caller)){ if($crmLastRecord->type_of_caller == "Retailer"){ ?> selected="selected" <?php } }?> >Retailer</option>
+										<option value="Official" <?php if(isset($crmLastRecord->type_of_caller)){ if($crmLastRecord->type_of_caller == "Official"){ ?> selected="selected" <?php } }?> >Official</option>
+										<option value="Dealer" <?php if(isset($crmLastRecord->type_of_caller)){ if($crmLastRecord->type_of_caller == "Dealer"){ ?> selected="selected" <?php } }?> >Dealer</option>
 									</select>
 								</div>
 							</div>
@@ -152,34 +152,31 @@
 									</select>
 								</div>
 							</div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 							<div class="form-group top-14px">
 								<label class="control-label col-sm-6" for="">Category:
 									<span class="asteriskField">*</span>
 								</label>
 								<div class="col-sm-6 input-group input-group-sm">
-									<select class="form-control" id="" name="category">
-										<option value="">--Select--</option>
-										<option value="Yes">Yes</option>
-										<option value="No">No</option>
-										<option value="Other">Other</option>
-									</select>
+									{!! Form::select('category_id', $categoryList, null, ['class' => 'form-control', 'placeholder' => 'Select Category', 'id' => 'catid']) !!}
 								</div>
 							</div>
 
-							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">SKU/Price:
-									<span class="asteriskField">*</span>
-								</label>
-								<div class="col-sm-6 input-group input-group-sm">
-									<select class="form-control" id="" name="sku_price">
-										<option value="">--Select--</option>
-										<option value="Yes">Yes</option>
-										<option value="No">No</option>
-										<option value="Other">Other</option>
-									</select>
-								</div>
-							</div>
+<script>
+	$(document).ready(function(){
+	    $("#catid").change(function(){
+	        //alert("The text has been changed.");
+	        var categoryId = $("#catid").val();
+	        var url = '{{ url("/crm-ticket/category-product-show")}}';
+	        $.get(url+'?category_id='+categoryId, function (data) {
+            	$('#category_product_show').html(data);
+        	});
+	    });
+	});
+</script>
+
+<span id="category_product_show"></span>
+							
 
 							<div class="form-group top-14px">
 								<label class="control-label col-sm-6" for="">Service Source:
@@ -254,8 +251,8 @@
 						</form>
 					</div>
 				</div>
-
-				<div class="col-sm-12">
+				@if(count($crmRecords))
+				<div class="col-sm-12" style="padding-right: 0px; padding-left: 0px;">
 					<table class="table table-bordered table-condensed">
 					    <thead>
 					      	<tr>
@@ -275,6 +272,7 @@
 					    </tbody>
 					  </table>
 				</div>
+				@endif
 			</div>
 			
 	
@@ -284,7 +282,7 @@
 						<mark>iTraker</mark> <code><?php echo 'Phone No: '.$phone_number; ?></code> & <code><?php echo 'Agent: '.$agent; ?></code>
 					</div>
 					<div class="panel-body">
-						<form class="form-horizontal" method="post" action="{{ url('crm-ticket/ticket-store') }}">
+						<form id="yourFormId" class="form-horizontal" method="post" action="{{ url('crm-ticket/ticket-store') }}">
 							{{ csrf_field() }}
 							<input type="hidden" class="form-control" id="" placeholder="" name="agent" value="<?php echo $agent; ?>">
 							<input type="hidden" class="form-control" id="" placeholder="" name="risen_from" value="Call Center">
@@ -379,7 +377,7 @@
 											<h3>Do you want to <b><mark>iTraker</mark> save</b>?</h3>
 										</div>
 										<div class="modal-footer bg-info">
-											<button type="submit" name="submit"  class="btn btn-success btn-block">Yes</button>
+											<button type="submit" name="submit"  class="btn btn-success btn-block submitBtn">Yes</button>
 											<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">No</button> -->
 										</div>
 									</div>
@@ -388,6 +386,15 @@
 						</form>
 					</div>
 				</div>
+
+				<script type="text/javascript">
+					$(document).ready(function () {
+    $("#yourFormId").submit(function () {
+        $(".submitBtn").attr("disabled", true);
+        return true;
+    });
+});
+				</script>
 
 				<div class="col-sm-12 col-xs-12" style="padding-right: 0px;padding-left: 0px;">
 					@if(isset($ticketLastRecord))

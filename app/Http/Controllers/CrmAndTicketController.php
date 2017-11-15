@@ -10,24 +10,34 @@ use App\User;
 use App\Models\TicketType;
 use App\Models\TicketStatus;
 use App\Models\Ticket;
+use App\Models\Category;
+use App\Models\SkuProduct;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '/../../../vendor/autoload.php';
+//require '/../../../vendor/autoload.php';
 
 class CrmAndTicketController extends Controller
 {
     public function create(Request $request)
     {
-        $agentCon = $request->agent;
-    	$phoneNumberCon = $request->phone_number;
+        $number=preg_replace('/\D/', '',  $request->phone_number);          //  Deleting Non Numeric Characters
+        if(substr($number, 0, 1) == "+" ) $number=substr($number, 1);       //  Deleting + if in First Position
+        if(substr($number, 0, 2) == "88") $number=substr($number, 2);       //  Deleting 8 if in First Two Position
+        if(substr($number, 0, 2) == "00") $number=substr($number, 2);       //  Deleting 0 if in First Two Position
+        if(substr($number, 0, 1) == "0" ) $number=substr($number, 1);       //  Deleting 0 if in First Position
+
+        $agent = isset($request->agent) ? $request->agent : 'Call Center';
+        $agentCon = $agent;
+    	$phoneNumberCon = $number;
         $crmLastRecord = Crm::where('phone_number', $phoneNumberCon)->orderBy('id', 'desc')->first();
         $ticketLastRecord = Ticket::where('customer_phone_number', $phoneNumberCon)->orderBy('id', 'desc')->first();
     	$crmRecords = Crm::where('phone_number', $phoneNumberCon)->orderBy('id', 'desc')->take(3)->get();
     	$userList = User::where('id', '<>', 1)->pluck('name', 'id');
     	$ticketTypeList = TicketType::pluck('name', 'id');
-    	$ticketStatusList = TicketStatus::pluck('name', 'id');
-    	return view('crm_ticket.create', compact('crmLastRecord', 'userList', 'ticketTypeList', 'ticketStatusList', 'agentCon', 'phoneNumberCon', 'crmRecords', 'ticketLastRecord'));
+        $ticketStatusList = TicketStatus::pluck('name', 'id');
+    	$categoryList = Category::pluck('name', 'id');
+    	return view('crm_ticket.create', compact('crmLastRecord', 'userList', 'ticketTypeList', 'ticketStatusList', 'agentCon', 'phoneNumberCon', 'crmRecords', 'ticketLastRecord', 'categoryList'));
     }
 
     public function storeCrm(Request $request)
@@ -122,5 +132,11 @@ class CrmAndTicketController extends Controller
 
         flash()->info('Ticket updated successfully');
         return redirect()->back();
+    }
+
+    public function categoryProductShow(Request $request)
+    {   
+        $products = SkuProduct::where('category_id', $request->category_id)->get();
+        return view('crm_ticket.category_product', compact('products'));
     }
 }

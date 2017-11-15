@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/home-bu', 'HomeController@indexBu');
 
 Route::get('/user', 'UserController@index');
 
@@ -26,11 +27,26 @@ Route::get('ticket-type', 'TicketTypeController@index');
 Route::get('ticket-status', 'TicketStatusController@index');
 
 Route::get('ticket', 'TicketController@index');
+Route::get('ticket/{id}/edit', 'TicketController@edit');
+Route::put('ticket/{id}', 'TicketController@update');
 
 Route::get('crm-ticket/create', 'CrmAndTicketController@create');
 Route::post('crm-ticket/crm-store', 'CrmAndTicketController@storeCrm');
 Route::post('crm-ticket/ticket-store', 'CrmAndTicketController@storeTicket');
 Route::post('crm-ticket/ticket-update', 'CrmAndTicketController@updateTicket');
+Route::get('crm-ticket/category-product-show', 'CrmAndTicketController@categoryProductShow');
+
+Route::get('category', 'CategoryController@index');
+Route::get('category/create', 'CategoryController@create');
+Route::post('category', 'CategoryController@store');
+Route::get('category/{id}/edit', 'CategoryController@edit');
+Route::put('category/{id}', 'CategoryController@update');
+
+Route::get('sku-product', 'SkuProductController@index');
+Route::get('sku-product/create', 'SkuProductController@create');
+Route::post('sku-product', 'SkuProductController@store');
+Route::get('sku-product/{id}/edit', 'SkuProductController@edit');
+Route::put('sku-product/{id}', 'SkuProductController@update');
 
 Route::group([ 'middleware' => 'can:ticket_admin-access'], function () {
 	Route::get('/user/{id}/edit', 'UserController@edit');
@@ -48,8 +64,6 @@ Route::group([ 'middleware' => 'can:ticket_admin-access'], function () {
 
 	Route::get('ticket/create', 'TicketController@create');
 	Route::post('ticket', 'TicketController@store');
-	Route::get('ticket/{id}/edit', 'TicketController@edit');
-	Route::put('ticket/{id}', 'TicketController@update');
 });
 
 Route::get('/mail','MailTestController@index'); //Working

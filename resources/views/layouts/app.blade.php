@@ -26,6 +26,7 @@
             margin-right: 6px;
         }
     </style>
+    @yield('style')
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-inverse navbar-static-top">
@@ -64,6 +65,8 @@
                         <li {{ (Request::is('ticket-type') ? 'class=active' : '') }} {{ (Request::is('ticket-type/create') ? 'class=active' : '') }}><a href="{{ url('/ticket-type') }}">Ticket Type</a></li>
                         <li {{ (Request::is('ticket-status') ? 'class=active' : '') }} {{ (Request::is('ticket-status/create') ? 'class=active' : '') }}><a href="{{ url('/ticket-status') }}">Ticket Status</a></li>
                         <li {{ (Request::is('ticket') ? 'class=active' : '') }} {{ (Request::is('ticket/create') ? 'class=active' : '') }}><a href="{{ url('/ticket') }}">Ticket</a></li>
+                        <li {{ (Request::is('category') ? 'class=active' : '') }} {{ (Request::is('category/create') ? 'class=active' : '') }}><a href="{{ url('/category') }}">Category</a></li>
+                        <li {{ (Request::is('sku-product') ? 'class=active' : '') }} {{ (Request::is('sku-product/create') ? 'class=active' : '') }}><a href="{{ url('/sku-product') }}">SKU Product</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
