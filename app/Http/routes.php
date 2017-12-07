@@ -48,6 +48,10 @@ Route::post('sku-product', 'SkuProductController@store');
 Route::get('sku-product/{id}/edit', 'SkuProductController@edit');
 Route::put('sku-product/{id}', 'SkuProductController@update');
 
+Route::get('/crm', 'CrmController@index');
+Route::get('/crm/download-report-form', 'CrmController@downloadReportForm');
+Route::get('/crm/download-report', 'CrmController@downloadReport');
+
 Route::group([ 'middleware' => 'can:ticket_admin-access'], function () {
 	Route::get('/user/{id}/edit', 'UserController@edit');
 	Route::put('/user/{id}', 'UserController@update');

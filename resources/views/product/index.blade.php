@@ -23,7 +23,7 @@
 	                            <th>SL</th>
 	                            <th>SKU Product Name</th>
 	                            <th>Category Name</th>
-	                            <th>SKU Price</th>
+	                            <th class="text-right">SKU Price</th>
 	                            <th>Description</th>
 	                            <th>Edit</th>
 	                        </tr>
@@ -37,7 +37,7 @@
 	                            <td>{{ ++$i }}</td>
 	                            <td><strong>{{ $product->name }}</strong></td>
 	                            <td><strong>{{ $product->category->name }}</strong></td>
-	                            <td><strong>{{ $product->sku_price }}</strong></td>
+	                            <td class="text-right"><strong>{{ number_format($product->sku_price, 2) }}</strong></td>
 	                            <td><strong>{{ $product->description }}</strong></td>
 	                            <td>{!! Html::link("sku-product/$product->id/edit",' Edit', ['class' => 'fa fa-edit btn btn-primary btn-xs']) !!}</td>  
 	                        </tr>

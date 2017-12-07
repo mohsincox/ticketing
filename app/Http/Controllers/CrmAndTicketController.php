@@ -15,7 +15,6 @@ use App\Models\SkuProduct;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//require '/../../../vendor/autoload.php';
 
 class CrmAndTicketController extends Controller
 {
@@ -36,12 +35,14 @@ class CrmAndTicketController extends Controller
     	$userList = User::where('id', '<>', 1)->pluck('name', 'id');
     	$ticketTypeList = TicketType::pluck('name', 'id');
         $ticketStatusList = TicketStatus::pluck('name', 'id');
+        //$ticketStatusList = TicketStatus::whereIn('id', [1, 4])->pluck('name', 'id');
     	$categoryList = Category::pluck('name', 'id');
     	return view('crm_ticket.create', compact('crmLastRecord', 'userList', 'ticketTypeList', 'ticketStatusList', 'agentCon', 'phoneNumberCon', 'crmRecords', 'ticketLastRecord', 'categoryList'));
     }
 
     public function storeCrm(Request $request)
     {
+        //return $request->all();
     	$crm = new Crm;
         $crm->agent = $request->agent;
         $crm->phone_number = $request->phone_number;
@@ -50,10 +51,11 @@ class CrmAndTicketController extends Controller
         $crm->type_of_caller = $request->type_of_caller;
         $crm->address = $request->address;
         $crm->division = $request->division;
-        $crm->category = $request->category;
-        $crm->sku_price = $request->sku_price;
+        $crm->category_id = $request->category_id;
+        $crm->sku_product_id = $request->sku_product_id;
         $crm->service_source = $request->service_source;
         $crm->product_batch_code = $request->product_batch_code;
+        $crm->verbatim = $request->verbatim;
         $crm->remarks = $request->remarks;
         $crm->save();
         flash()->info($crm->phone_number.' CRM created successfully');
@@ -102,15 +104,17 @@ class CrmAndTicketController extends Controller
             // }
            
             $mail->addReplyTo('info@example.com', 'Information');
+            //$mail->addCC('mohsin.cse.45@gmail.com');
            
             $mail->isHTML(true);                                 
             $mail->Subject = 'Ticket_' . date("Y-m-d");
-            $mail->Body    = "Ticket Type: <b>".$ticketNew->ticketType->name."</b><br>
-                            Ticket Status: <b>".$ticketNew->ticketStatus->name."</b><br>
-                            Customer Phone Number: <b>".$ticketNew->customer_phone_number."</b><br>
-                            Customer Name: <b>".$ticketNew->customer_name."</b><br>
-                            Customer Address: <b>".$ticketNew->customer_address."</b><br>
+            $mail->Body    = "Type: <b>".$ticketNew->ticketType->name."</b><br>
+                            Status: <b>".$ticketNew->ticketStatus->name."</b><br>
+                            Phone No: <b>".$ticketNew->customer_phone_number."</b><br>
+                            Name: <b>".$ticketNew->customer_name."</b><br>
+                            Address: <b>".$ticketNew->customer_address."</b><br>
                             Division: <b>".$ticketNew->division."</b><br>
+                            Code: <b>".$ticketNew->product_batch_code."</b><br>
                             Description: <b>".$ticketNew->description."</b>";
             $mail->send();
             echo 'Message has been sent';

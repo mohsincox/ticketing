@@ -100,9 +100,7 @@
 							</div>
 
 							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Gender:
-									<span class="asteriskField">*</span>
-								</label>
+								<label class="control-label col-sm-6" for="">Gender:</label>
 								<div class="col-sm-6 input-group input-group-sm">
 									<select class="form-control" id="" name="gender">
 										<option value="">--Select--</option>
@@ -113,9 +111,7 @@
 							</div>
 
 							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Type of Caller:
-									<span class="asteriskField">*</span>
-								</label>
+								<label class="control-label col-sm-6" for="">Type of Caller:</label>
 								<div class="col-sm-6 input-group input-group-sm">
 									<select class="form-control" id="" name="type_of_caller">
 										<option value="">--Select--</option>
@@ -130,58 +126,46 @@
 							<div class="form-group top-14px">
 								<label class="control-label col-sm-6" for="">Address:</label>
 								<div class="col-sm-6 input-group input-group-sm">          
-									<input type="text" class="form-control" id="" placeholder="Address" name="address" autocomplete="off">
+									<input type="text" class="form-control" id="" placeholder="Address" name="address" autocomplete="off" value="<?php if(isset($crmLastRecord->address)){echo $crmLastRecord->address;} ?>">
 								</div>
 							</div>
 
 							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Division:
-									<span class="asteriskField">*</span>
-								</label>
+								<label class="control-label col-sm-6" for="">Division:</label>
 								<div class="col-sm-6 input-group input-group-sm">
 									<select class="form-control" id="" name="division">
 										<option value="">--Select--</option>
-										<option value="Barisal">Barisal</option>
+										<option value="Barisal" <?php if(isset($crmLastRecord->division)){ if($crmLastRecord->division == "Barisal"){ ?> selected="selected" <?php } }?> >Barisal</option>
+										<option value="Chittagong" <?php if(isset($crmLastRecord->division)){ if($crmLastRecord->division == "Chittagong"){ ?> selected="selected" <?php } }?> >Chittagong</option>
+										<option value="Dhaka" <?php if(isset($crmLastRecord->division)){ if($crmLastRecord->division == "Dhaka"){ ?> selected="selected" <?php } }?> >Dhaka</option>
+										<option value="Khulna" <?php if(isset($crmLastRecord->division)){ if($crmLastRecord->division == "Khulna"){ ?> selected="selected" <?php } }?> >Khulna</option>
+										<option value="Mymensingh" <?php if(isset($crmLastRecord->division)){ if($crmLastRecord->division == "Mymensingh"){ ?> selected="selected" <?php } }?> >Mymensingh</option>
+										<option value="Rajshahi" <?php if(isset($crmLastRecord->division)){ if($crmLastRecord->division == "Rajshahi"){ ?> selected="selected" <?php } }?> >Rajshahi</option>
+										<option value="Rangpur" <?php if(isset($crmLastRecord->division)){ if($crmLastRecord->division == "Rangpur"){ ?> selected="selected" <?php } }?> >Rangpur</option>
+										<option value="Sylhet" <?php if(isset($crmLastRecord->division)){ if($crmLastRecord->division == "Sylhet"){ ?> selected="selected" <?php } }?> >Sylhet</option>
+										<!-- <option value="Barisal">Barisal</option>
 										<option value="Chittagong">Chittagong</option>
 									  	<option value="Dhaka">Dhaka</option>
 									  	<option value="Khulna">Khulna</option>
 									  	<option value="Mymensingh">Mymensingh</option>
 									  	<option value="Rajshahi">Rajshahi</option>
 									  	<option value="Rangpur">Rangpur</option>
-									  	<option value="Sylhet">Sylhet</option>
+									  	<option value="Sylhet">Sylhet</option> -->
 									</select>
 								</div>
 							</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Category:
-									<span class="asteriskField">*</span>
-								</label>
+								<label class="control-label col-sm-6" for="">Category:</label>
 								<div class="col-sm-6 input-group input-group-sm">
 									{!! Form::select('category_id', $categoryList, null, ['class' => 'form-control', 'placeholder' => 'Select Category', 'id' => 'catid']) !!}
 								</div>
 							</div>
 
-<script>
-	$(document).ready(function(){
-	    $("#catid").change(function(){
-	        //alert("The text has been changed.");
-	        var categoryId = $("#catid").val();
-	        var url = '{{ url("/crm-ticket/category-product-show")}}';
-	        $.get(url+'?category_id='+categoryId, function (data) {
-            	$('#category_product_show').html(data);
-        	});
-	    });
-	});
-</script>
-
-<span id="category_product_show"></span>
+							<span id="category_product_show"></span>
 							
-
 							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Service Source:
-									<span class="asteriskField">*</span>
-								</label>
+								<label class="control-label col-sm-6" for="">Service Source:</label>
 								<div class="col-sm-6 input-group input-group-sm">
 									<select class="form-control" id="" name="service_source">
 										<option value="">--Select--</option>
@@ -204,22 +188,21 @@
 							<div class="form-group top-14px">
 								<label class="control-label col-sm-6" for="">Verbatim:</label>
 								<div class="col-sm-6 input-group input-group-sm">          
-									<input type="text" class="form-control" id="" placeholder="verbatim" name="verbatim" autocomplete="off">
+									<input type="text" class="form-control" id="" placeholder="Verbatim" name="verbatim" autocomplete="off">
 								</div>
 							</div>
 					
 							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Remarks
-									<span class="asteriskField">*</span>
-								</label>
+								<label class="control-label col-sm-6" for="">Remarks:</label>
 								<div class="col-sm-6 input-group input-group-sm">
 									<select class="form-control" id="" name="remarks">
 										<option value="">--Select--</option>
-										<option value="Call back follow up">Call back follow up</option>
-										<option value="UNSUCCSESSFUL">UNSUCCSESSFUL</option>
-										<option value="completely informed">completely informed</option>
-										<option value="information Gap">information Gap</option>
-										<option value="below targert age">below targert age</option>
+										<option value="Busy">Busy</option>
+										<option value="No Answer">No Answer</option>
+										<option value="Not Intersted">Not Intersted</option>
+										<option value="Successfull">Successfull</option>
+										<option value="Switched Off">Switched Off</option>
+										<option value="Call Back">Call Back</option>
 									</select>
 								</div>
 							</div>
@@ -257,16 +240,26 @@
 					    <thead>
 					      	<tr>
 						        <th>Category</th>
+						        <th>SKU Product</th>
 						        <th>B.Code/Product</th>
-						        <th>Varbatin</th>
+						        <th>Verbatim</th>
 					      	</tr>
 					    </thead>
 					    <tbody>
 					    	@foreach($crmRecords as $crm)
 							    <tr>
-							        <td>{{ $crm->category }}</td>
-							        <td>{{ $crm->name }}</td>
-							        <td>{{ $crm->address }}</td>
+							    	@if(isset($crm->category->name))
+							        	<td>{{ $crm->category->name }}</td>
+							        @else
+							        	<td></td>
+							        @endif
+							        @if(isset($crm->product->name))
+							        	<td>{{ $crm->product->name }}</td>
+							        @else
+							        	<td></td>
+							        @endif
+							        <td>{{ $crm->product_batch_code }}</td>
+							        <td>{{ $crm->verbatim }}</td>
 							    </tr>
 						    @endforeach
 					    </tbody>
@@ -282,12 +275,22 @@
 						<mark>iTraker</mark> <code><?php echo 'Phone No: '.$phone_number; ?></code> & <code><?php echo 'Agent: '.$agent; ?></code>
 					</div>
 					<div class="panel-body">
-						<form id="yourFormId" class="form-horizontal" method="post" action="{{ url('crm-ticket/ticket-store') }}">
+						<form id="ticketForm" class="form-horizontal" method="post" action="{{ url('crm-ticket/ticket-store') }}">
 							{{ csrf_field() }}
 							<input type="hidden" class="form-control" id="" placeholder="" name="agent" value="<?php echo $agent; ?>">
 							<input type="hidden" class="form-control" id="" placeholder="" name="risen_from" value="Call Center">
+							<input type="hidden" class="form-control" id="" placeholder="" name="ticket_status_id" value="1">
 							<!-- <input type="hidden" class="form-control" id="" placeholder="" name="phone_number" value="<?php echo $phone_number; ?>"> -->
 				  
+				  			<div class="form-group top-14px">
+								<label class="control-label col-sm-6" for="">Ticket Type/Title:
+									<span class="asteriskField">*</span>
+								</label>
+								<div class="col-sm-6 input-group input-group-sm">
+									{!! Form::select('ticket_type_id', $ticketTypeList, null, ['class' => 'form-control', 'placeholder' => 'Select Ticket Type', 'required' => 'required']) !!}
+								</div>
+							</div>
+
 							<div class="form-group top-14px">
 								<label class="control-label col-sm-6" for="">To:
 									<span class="asteriskField">*</span>
@@ -296,24 +299,15 @@
 									{!! Form::select('user_id', $userList, null, ['class' => 'form-control', 'placeholder' => 'Select assign to', 'required' => 'required']) !!}
 								</div>
 							</div>
-
-							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Ticket Type/Title:
-									<span class="asteriskField">*</span>
-								</label>
-								<div class="col-sm-6 input-group input-group-sm">
-									{!! Form::select('ticket_type_id', $ticketTypeList, null, ['class' => 'form-control', 'placeholder' => 'Select Ticket Type', 'required' => 'required']) !!}
-								</div>
-							</div>
 				  
-							<div class="form-group top-14px">
+							<!-- <div class="form-group top-14px">
 								<label class="control-label col-sm-6" for="">Ticket Status:
 									<span class="asteriskField">*</span>
 								</label>
 								<div class="col-sm-6 input-group input-group-sm">
 									{!! Form::select('ticket_status_id', $ticketStatusList, null, ['class' => 'form-control', 'placeholder' => 'Select Ticket Status', 'required' => 'required']) !!}
 								</div>
-							</div>
+							</div> -->
 
 							<div class="form-group top-14px">
 								<label class="control-label col-sm-6" for="">Customer Name:</label>
@@ -323,7 +317,9 @@
 							</div>
 
 							<div class="form-group top-14px">
-								<label class="control-label col-sm-6" for="">Customer Mobile No:</label>
+								<label class="control-label col-sm-6" for="">Customer Mobile No:
+									<span class="asteriskField">*</span>
+								</label>
 								<div class="col-sm-6 input-group input-group-sm">
 									<input type="text" class="form-control readonly" id="" placeholder="Customer Mobile Number" name="customer_phone_number" value="<?php if(isset($crmLastRecord->phone_number)){echo $crmLastRecord->phone_number;} ?>" required="required">
 								</div>
@@ -377,7 +373,7 @@
 											<h3>Do you want to <b><mark>iTraker</mark> save</b>?</h3>
 										</div>
 										<div class="modal-footer bg-info">
-											<button type="submit" name="submit"  class="btn btn-success btn-block submitBtn">Yes</button>
+											<button type="submit" name="submit"  class="btn btn-success btn-block submitBtnTicket">Yes</button>
 											<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">No</button> -->
 										</div>
 									</div>
@@ -387,14 +383,6 @@
 					</div>
 				</div>
 
-				<script type="text/javascript">
-					$(document).ready(function () {
-    $("#yourFormId").submit(function () {
-        $(".submitBtn").attr("disabled", true);
-        return true;
-    });
-});
-				</script>
 
 				<div class="col-sm-12 col-xs-12" style="padding-right: 0px;padding-left: 0px;">
 					@if(isset($ticketLastRecord))
@@ -440,10 +428,30 @@
 			<center><p style="font-family: 'Open Sans', serif; font-size: 12px; margin-top: 0px;"><span style="color: #FFFFFF">© 2015. MY Outsourcing Limited. Developed by</span> <a href="#" style="color: red;">MY Outsoursing Limited.</a> <span style="color: #FFFFFF">All Rights Reserved.</span></p></center>
 		</div>
 	</div>
+
 	<script>
 	    $(".readonly").keydown(function(e){
 	        e.preventDefault();
 	    });
+
+	    $(document).ready(function(){
+		    $("#catid").change(function(){
+		        //alert("The text has been changed.");
+		        var categoryId = $("#catid").val();
+		        var url = '{{ url("/crm-ticket/category-product-show")}}';
+		        $.get(url+'?category_id='+categoryId, function (data) {
+	            	$('#category_product_show').html(data);
+	        	});
+		    });
+		});
+
+		$(document).ready(function () {
+		    $("#ticketForm").submit(function () {
+		        $(".submitBtnTicket").attr("disabled", true);
+		        return true;
+		    });
+		});
 	</script>
+
 </body>
 </html>

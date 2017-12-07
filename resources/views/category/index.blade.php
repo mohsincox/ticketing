@@ -6,7 +6,7 @@
 	    <div class="col-sm-12">
 	        <h3 style="margin-top: 0px;">
 	            <i class="fa fa-list-ul"></i>
-	            List of <mark>Category</mark>
+	            List of <mark>Categories</mark>
 	            
 		            <a href="{{ url('category/create') }}" class="btn btn-primary pull-right">
 		                <i class="fa fa-plus"></i> Create <code><b>Category</b></code>

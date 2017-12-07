@@ -21,8 +21,8 @@ class CreateCrmsTable extends Migration
             $table->string('type_of_caller')->nullable();
             $table->string('address')->nullable();
             $table->string('division')->nullable();
-            $table->string('category')->nullable();
-            $table->string('sku_price')->nullable();
+            $table->integer('category_id')->unsigned()->nullable();
+            $table->integer('sku_product_id')->unsigned()->nullable();
             $table->string('service_source')->nullable();
             $table->string('product_batch_code')->nullable();
             $table->string('remarks')->nullable();

@@ -29,6 +29,8 @@
 	                            <th>Division</th>
 	                            <th>Ticket Type</th>
 	                            <th>Ticket Status</th>
+	                            <th>Code</th>
+	                            <th>Description</th>
 	                            <th>Agent</th>
 	                            <th>Created At</th>
 	                            <th>Edit</th>
@@ -48,6 +50,8 @@
 	                            <td>{{ $ticket->division }}</td>
 	                            <td>{{ $ticket->ticketType->name }}</td>
 	                            <td>{{ $ticket->ticketStatus->name }}</td>
+	                            <td>{{ $ticket->product_batch_code }}</td>
+	                            <td>{{ $ticket->description }}</td>
 	                            <td>{{ $ticket->agent }}</td>
 	                            <td>{{ $ticket->created_at }}</td>
 	                            <td>{!! Html::link("ticket/$ticket->id/edit",' Edit', ['class' => 'fa fa-edit btn btn-primary btn-xs']) !!}</td>

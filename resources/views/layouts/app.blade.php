@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Dano</title>
+    <title>Arla</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
@@ -43,7 +43,7 @@
 
                 <!-- Branding Image -->
                 <a style="color: #ffffff" class="navbar-brand" href="{{ url('/') }}">
-                    Dano Ticketing
+                    ARLA Foods Ltd.
                 </a>
             </div>
 
@@ -67,6 +67,18 @@
                         <li {{ (Request::is('ticket') ? 'class=active' : '') }} {{ (Request::is('ticket/create') ? 'class=active' : '') }}><a href="{{ url('/ticket') }}">Ticket</a></li>
                         <li {{ (Request::is('category') ? 'class=active' : '') }} {{ (Request::is('category/create') ? 'class=active' : '') }}><a href="{{ url('/category') }}">Category</a></li>
                         <li {{ (Request::is('sku-product') ? 'class=active' : '') }} {{ (Request::is('sku-product/create') ? 'class=active' : '') }}><a href="{{ url('/sku-product') }}">SKU Product</a></li>
+                        <li {{ (Request::is('crm') ? 'class=active' : '') }} ><a href="{{ url('/crm') }}">CRM</a></li>
+
+                        <li {{ (Request::is('crm/download-report-form') ? 'class=active' : '') }} class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Report Download <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li {{ (Request::is('crm/download-report-form') ? 'class=active' : '') }}><a href="{{ url('/crm/download-report-form') }}">Inbound Report Download</a></li>
+                            </ul>
+                        </li>
+                        
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
@@ -87,6 +99,12 @@
     </div>
 
     @yield('content')
+
+    <div class="container-fluid" style="padding-right: 0px; padding-left: 0px;">
+        <div style="background: #43474d;">
+            <center><p style="font-family: 'Open Sans', serif; font-size: 12px; margin-top: 0px; padding: 10px;"><span style="color: #FFFFFF">Developed by</span> <a href="http://myolbd.com/" target="_blank" style="color: red;">MY Outsoursing Limited.</a> <span style="color: #FFFFFF">All Rights Reserved.</span></p></center>
+        </div>
+    </div>
 
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
