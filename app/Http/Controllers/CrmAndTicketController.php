@@ -90,7 +90,7 @@ class CrmAndTicketController extends Controller
             $mail->Host = 'smtp.gmail.com';  
             $mail->SMTPAuth = true;                               
             $mail->Username = 'mohsincse2015@gmail.com';                 
-            $mail->Password = 'mohsincse123';                          
+            $mail->Password = '123456789012';                          
             $mail->SMTPSecure = 'tls';                            
             $mail->Port = 587;  
 
